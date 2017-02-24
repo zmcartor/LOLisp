@@ -20,3 +20,8 @@
   (setf *small* 1)
   (guess-my-number))
 
+;; let () declare local variables in a block and use them withing the block
+;; flet declare local functions and use within that block
+;; global functions defined through defun
+;; labels defines function like flet, but funcs can call themselves.
+;;    good for recursion!

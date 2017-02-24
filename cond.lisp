@@ -8,4 +8,12 @@
     )
   )
 
-(catchphrase 'homer)
+;; case statement can be easier to read. executes an eq but can only be
+;; used on symbols, not strings.
+;; otherwise runs if nothing is matched. It's like a super if-else chain
+(defun case-catchphrase (character)
+  (case character
+          ( (bart) '(dont have a cow man) )
+          (otherwise '(dont know that character) )
+        )
+  )
