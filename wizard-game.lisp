@@ -11,8 +11,14 @@
 (defun describe-paths (location edges)
    (apply #'append (mapcar #'describe-path (cdr assoc location edges))))
 
+(defun describe-location (location nodes)
+  (cadr ( assoc location nodes )))
 ;; list of all objects
 (defparameter *objects* '(whiskey bucket frog chain))
+
+(defparameter *nodes* '( (living-room ( you are in the living room. A wizard snores
+  on the couch)) (garden (you are in the garden. There is a well.)) ( attic (you are
+in the attic. A torch in the corner.))))
 
 ;; alist of various objects and their locations
 ;; alist - a list of pairs ( (pairs) (pairs .. )
@@ -21,9 +27,28 @@
 ;; list objects from a given location
 ;; pass in list of all objects, list of all object locations
 ;; return list of all objects at a specified location.
-;; could likely generate list of objects from objs-locs
+;; run through each item, and see if it matches the location.
+;; objects-locations is stored as an alist.
 
 (defun objects-at (loc objs obj-locs)
    (labels ((at-loc-p(obj)
          (eq (cadr  (assoc obj obj-locs)) loc)))
    (remove-if-not #'at-loc-p objs)))
+
+;; describe objects in front of you
+;; grab all of the objects at a given location. apply function
+;; to describe each one, concat up descriptions.
+(defun describe-objects (loc objs objs-locs)
+  (labels ((describe-obj (obj)
+           `(you see a ,obj on the floor.)))
+  (apply #'append (mapcar #'describe-obj (objects-at loc objs objs-loc)))))
+
+
+;; global var to track where we are at moment
+(defparameter *location* 'living-room)
+
+;; describe where we are , the paths in/out, and objects within this location
+(defun look ()
+(append   (describe-location *location* *nodes*)
+          (describe-paths *location* *edges*)
+          (describe-objects *location* *objects* *objects-locations*)))
